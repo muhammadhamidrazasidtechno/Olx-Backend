@@ -37,5 +37,18 @@ Router.get('/:id', async (req, res) => {
     }
 });
 
+Router.delete('/delete', async (req, res) => {
+    try {
+        const adId = req.body.id;
+        const deletedAd = await Ad.findByIdAndDelete(adId);
+        if (!deletedAd) {
+            return res.status(404).json({ message: "Ad not found" });
+        }
+        res.json({ message: "Ad deleted successfully" });
+    } catch (e) {
+        res.status(500).json({ message: e.message });
+    }
+});
+
 
 export default Router
