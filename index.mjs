@@ -6,6 +6,14 @@ import cors from 'cors'; // CORS middleware ko import karein
 const app = express();
 
 console.log("hello");
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Sabhi origins ko allow karne ke liye
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE'); // Allowed HTTP methods
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Allowed headers
+    next();
+});
+
 app.use(cors());
 app.use(express.json());
 
