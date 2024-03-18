@@ -51,4 +51,34 @@ Router.delete('/delete', async (req, res) => {
 });
 
 
+Router.get('/myads/:id', async (req, res) => {
+    console.log(req.params.id);
+    try {
+        const ad = await Ad.find({ userId: req.params.id }); // _id field se record retrieve karna
+        if (!ad) {
+            return res.status(404).json({ message: "Ad not found" }); // agar ad nahi milta, 404 error send karo
+        }
+        res.json(ad); // ad ko JSON format mein send karo
+    } catch (e) {
+        res.status(500).json({ message: e.message }); // agar koi error aati hai, 500 error send karo
+    }
+});
+
+
+
+Router.get('/category/:id', async (req, res) => {
+    console.log(req.params.id);
+    try {
+        const ad = await Ad.find({ category: req.params.id }); // _id field se record retrieve karna
+        if (!ad) {
+            return res.status(404).json({ message: "Ad not found" }); // agar ad nahi milta, 404 error send karo
+        }
+        res.json(ad); // ad ko JSON format mein send karo
+    } catch (e) {
+        res.status(500).json({ message: e.message }); // agar koi error aati hai, 500 error send karo
+    }
+});
+
+
+
 export default Router

@@ -36,7 +36,7 @@ Router.put("/login", async (req, res) => {
         res.status(500).send({ message: error.message });
     }
 });
-Router.put('/logout', verifyToken ,async (req, res) => {
+Router.put('/logout', verifyToken, async (req, res) => {
     let token = req.headers.authorization
     token = token.slice(7)
     console.log(token)
@@ -45,7 +45,7 @@ Router.put('/logout', verifyToken ,async (req, res) => {
         const user = await Users.findOne({ email: req.body.email })
 
         await Users.findByIdAndUpdate(user._id, { $pull: { tokens: token } })
-    res.send({ message: 'Logged out successfully!' })
+        res.send({ message: 'Logged out successfully!' })
     } catch (e) {
         res.send({ message: e.message })
     }
@@ -73,7 +73,7 @@ Router.put('/forget', async (req, res) => {
 
         // Update user's password
         user.password = newPassword;
-        const use =  await user.save();
+        const use = await user.save();
         console.log(use);
 
 
@@ -84,4 +84,30 @@ Router.put('/forget', async (req, res) => {
         res.status(500).json({ message: "Internal server error." });
     }
 });
+
+
+
+Router.get('/userfind/:id', async (req, res) => {
+
+
+
+    try {
+        // Find user by _id
+        const user = await Users.findOne({_id:req.params.id});
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // User found, send it back as response
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error("Error finding user:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+
+})
+
+
+
 export default Router;
